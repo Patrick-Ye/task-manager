@@ -14,11 +14,27 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
   const db = client.db(databaseName)
 
-  db.collection('users').findOne({ name: 'Jack' }, (error, user) => {
-    if (error) {
-      return console.log('Unable to fetch')
+  db.collection('users').updateOne({
+    _id: new ObjectID("5db41c1269d63a1361b63bff")
+  }, {
+    $inc: {
+      age: 1
     }
+  }).then((result) => {
+    console.log(result)
+  }).catch((error) => {
+    console.log(error)
+  })
 
-    console.log(user)
+  db.collection('tasks').updateMany({
+    completed: false
+  }, {
+    $set: {
+      completed: true
+    }
+  }).then((result) => {
+    console.log(result.modifiedCount)
+  }).catch((error) => {
+    console.log(error)
   })
 })
